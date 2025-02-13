@@ -34,6 +34,14 @@ const rerender = () => {
 const setStep = (newStep) => {
   if (newStep > step) {
     step = newStep;
+    let lessons;
+    try {
+      lessons = JSON.parse(localStorage.getItem("lessons")) ?? {};
+    } catch {
+      lessons = {};
+    }
+    lessons[window.LESSON] = newStep;
+    localStorage.setItem("lessons", JSON.stringify(lessons));
     rerender();
   }
 };
@@ -69,10 +77,13 @@ const initButtons = () => {
 
       // Wrong answer :(
       const incorrectTries = parseIntThrow(error.dataset.errors ?? "0");
+      const hint =
+        element.dataset.hint ??
+        `The answer is ${answer.length} characters long`;
       const messages = [
         "This is not the right answer, please try again.",
         "This is still not the right answer, please try again.",
-        `This is still not the right answer, please try again. Tip: The answer is ${answer.length} characters long`,
+        `This is still not the right answer, please try again. Hint: ${hint}`,
         `The right answer was: '${answer}'. Enter it to finish this step.`,
       ];
       if (incorrectTries >= messages.length) {
@@ -87,6 +98,14 @@ const initButtons = () => {
 };
 
 const init = () => {
+  try {
+    const lessons = JSON.parse(localStorage.getItem("lessons"));
+    const existingStep = lessons[window.LESSON];
+    if (typeof existingStep === "number") {
+      step = existingStep;
+    }
+  } catch {}
+
   initButtons();
   rerender();
 };

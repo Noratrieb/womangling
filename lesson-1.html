@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+    <title>Womangling</title>
+  </head>
+  <body>
+    <main class="main">
+      <div class="content" id="content-area">
+        <h1>
+          <a class="root-link" href="/">Learn C++ Itanium Symbol Mangling</a>
+        </h1>
+        <h2>Lesson 1: Basics</h2>
+        <noscript>
+          <p>
+            Warning: You have JavaScript disabled While the content is still
+            viewable, interactive exercises will not work. Consider enabling
+            JavaScript for this website.
+          </p>
+        </noscript>
+
+        <section data-step="0" class="step">
+          <p>
+            After getting an understanding of how this guide works and learning
+            about the not-mangling of C identifiers, we are ready to dive into
+            C++.
+          </p>
+          <p>
+            Every C++ mangled symbol is prefixed with the string
+            <code>_Z</code>. This signifies that this is a mangled C++ symbol.
+            <code>_Z</code> starts with an underscore followed by an uppercase
+            letter. All symbols of that structures are reserved by the C
+            standard and cannot be used by programs. This ensures that there are
+            no name collisions with normal C functions and mangled C++
+            functions.
+          </p>
+          <p>
+            After that, the name of the entity is stored. For now, we will only
+            look at functions. For functions, the function type is appended to
+            the name to get the full symbol.
+          </p>
+          <pre class="code">
+void f() {}
+          </pre>
+          <p>
+            This empty function will be mangled to <code>_Z1fv</code>. The
+            <code>1f</code> signifies the name (we will look at this in more
+            detail later in this lesson) and the <code>v</code> signifies the
+            function type (which we will visit in more detail in a future
+            lesson).
+          </p>
+          <div class="quiz-section">
+            <p>
+              Which of these symbols cannot possibly be a mangled C++ symbol?
+              Answer with the name of the symbol.
+            </p>
+            <ul>
+              <li><code>_ZN3FooIA4_iE3barE</code></li>
+              <li><code>_ZN6System5Sound4beepEv</code></li>
+              <li><code>_RN3FooIA4_iE3barE</code></li>
+            </ul>
+            <form
+              data-challenge="1"
+              data-answer="_RN3FooIA4_iE3barE"
+              data-hint="Look at the prefix"
+            >
+              <input class="quiz-input" />
+              <button
+                data-challenge-submit="1"
+                class="submit-challenge"
+                type="submit"
+              >
+                Answer
+              </button>
+              <div class="error"></div>
+            </form>
+          </div>
+        </section>
+        <section data-step="1" class="step">
+          <p></p>
+          <div class="quiz-section">
+            <form data-challenge="2" data-answer="meow">
+              <input class="quiz-input" />
+              <button
+                data-challenge-submit="2"
+                class="submit-challenge"
+                type="submit"
+              >
+                Answer
+              </button>
+              <div class="error"></div>
+            </form>
+          </div>
+        </section>
+      </div>
+    </main>
+    <script>
+      window.LESSON = 1;
+    </script>
+    <script type="module" src="./lessons.js"></script>
+  </body>
+</html>
