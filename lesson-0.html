@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+    <title>Womangling</title>
+  </head>
+  <body>
+    <main class="main">
+      <div class="content" id="content-area">
+        <h1>Learn C++ Itanium Mangling</h1>
+        <h2>Lesson 1: Intro and C names</h2>
+        <noscript>
+          <p>
+            Warning: You have JavaScript disabled While the content is still
+            viewable, interactive exercises will not work. Consider enabling
+            JavaScript for this website.
+          </p>
+        </noscript>
+
+        <section data-step="0" class="step">
+          <p>
+            Welcome to the interactive Itanium C++ mangling learning website! In
+            this course you will learn everything there is to know about Itanium
+            C++ Mangling, especially the things you've never wanted to know.
+          </p>
+          <p>
+            For every exercise, there will be a small quiz. If you complete the
+            quiz, you can continue
+          </p>
+          <div class="quiz-section">
+            <p>To complete the first quiz, press the button below.</p>
+            <form data-challenge="1">
+              <button
+                data-challenge-submit="1"
+                class="submit-challenge"
+                type="submit"
+              >
+                Complete first challenge!
+              </button>
+              <div class="error"></div>
+            </form>
+          </div>
+        </section>
+        <section data-step="1" class="step">
+          <p>
+            Congrats, you just completed your first challenge! Good job. So,
+            let's start with the mangling. Before diving too deep into the
+            innards of Itanium Mangling, let's get more familiar with the way
+            this works by mangling something trivial: a C function. C functions
+            are traditionally not mangled (*this is not always fully true on all
+            platforms). The simplest possible C function takes no arguments and
+            returns no value. For C it doesn't actually matter what the
+            parameters or return value are, since there is no mangling.
+          </p>
+          <p>
+            To reference this function in C++, we use an
+            <code>extern "C"</code> block.
+          </p>
+          <pre class="code">
+extern "C" {
+  void hello() {}
+}
+          </pre>
+          <p>
+            Because no mangling is applied to the identifier at all, the symbol
+            for this function will simply be <code>hello</code>.
+          </p>
+          <p>
+            Similarly, a more complex example would be the following function:
+          </p>
+          <pre class="code">
+extern "C" {
+  int main(int argc, char* argv[]) {}
+}
+          </pre>
+          <p>
+            But once again, the symbol name will simply be
+            <code>main</code> because no mangling is applied.
+          </p>
+          <div class="quiz-section">
+            <p>What is the mangled symbol of the following function?</p>
+            <pre class="code">
+extern "C" {
+  long long meow(long long argument, long long second) { /* too long */ }
+}
+            </pre>
+            <form data-challenge="2" data-answer="meow">
+              <input class="quiz-input" />
+              <button
+                data-challenge-submit="2"
+                class="submit-challenge"
+                type="submit"
+              >
+                Answer
+              </button>
+              <div class="error"></div>
+            </form>
+          </div>
+        </section>
+        <section data-step="2" class="step">
+          <p>meow meow meow!!</p>
+        </section>
+      </div>
+    </main>
+    <script>
+      window.LESSON = 0;
+    </script>
+    <script type="module" src="./lessons.js"></script>
+  </body>
+</html>
