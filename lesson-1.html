@@ -48,8 +48,12 @@ void f() {}
             This empty function will be mangled to <code>_Z1fv</code>. The
             <code>1f</code> signifies the name (we will look at this in more
             detail later in this lesson) and the <code>v</code> signifies the
-            function type (which we will visit in more detail in a future
-            lesson).
+            function type.
+          </p>
+          <p>
+            We will see the <code>v</code> function type a lot in the rest of
+            this guide. It stands for a function that takes no arguments and
+            returns <code>void</code>.
           </p>
           <div class="quiz-section">
             <p>
@@ -79,9 +83,31 @@ void f() {}
           </div>
         </section>
         <section data-step="1" class="step">
-          <p></p>
+          <p>
+            For names, there are two cases to consider for now. Either the name
+            is in the global scope, or it is in a namespace.
+          </p>
+          <p>For global names, we just prefix the name with its length.</p>
+          <pre class="code">
+void hello_world() {}
+          </pre>
+          <p>
+            This will therefore get mangled as <code>_Z11hello_worldv</code>.
+            The length of <code>hello_world</code> is 11, so we concatenate
+            <code>11</code> and <code>hello_world</code>. This entire thing is
+            then appended to the previously mentioned prefix <code>_Z</code> and
+            then we add the type, which is just <code>v</code> here, at the end.
+          </p>
           <div class="quiz-section">
-            <form data-challenge="2" data-answer="meow">
+            <p>What is the mangling of the following identifier?</p>
+            <pre class="code">
+void meow() {}
+            </pre>
+            <form
+              data-challenge="2"
+              data-answer="_Z4meowv"
+              data-hint="Remember the prefix and function type"
+            >
               <input class="quiz-input" />
               <button
                 data-challenge-submit="2"
@@ -92,6 +118,109 @@ void f() {}
               </button>
               <div class="error"></div>
             </form>
+          </div>
+        </section>
+        <section data-step="2" class="step">
+          <p>
+            Functions that are declared in a namespace get a bit more
+            complicated. They are referred to as <i>nested names</i>, because
+            they are <i>nested</i> in a namespace. They can also be nested in
+            multiple namespaces, the encoding is the same.
+          </p>
+          <p>
+            Nested names start with an <code>N</code> and end with an
+            <code>E</code>. Between those two letters, the hierarchy of the
+            namespace is represented by putting on namespace name after another,
+            with the function name last. Every name has the leading length and
+            then the name itself, just like with global names.
+          </p>
+          <pre class="code">
+namespace outer {
+  void inner() {}
+}
+          </pre>
+          <p>
+            That means that this function will be mangled as
+            <code>_ZN5outer5innerEv</code>. We can decode this into the
+            following structure
+          </p>
+          <ul>
+            <li><code>_Z</code>: Prefix</li>
+            <li><code>N</code>: Start of nested name</li>
+            <li>
+              <code>5outer</code>: Outer namespace, name prefixed by length
+            </li>
+            <li>
+              <code>5inner</code>: Inner function, name prefixed by length
+            </li>
+            <li><code>E</code>: End of nested name</li>
+            <li><code>v</code>: Function type</li>
+          </ul>
+          <p>Nested namespaces follow the same structure.</p>
+          <pre class="code">
+namespace a {
+  namespace b {
+    namespace c {
+      void inner() {}
+    }
+  }
+}
+          </pre>
+          <p>
+            This function will mangle as <code>_ZN1a1b1c5innerEv</code>. We get
+            all the concatinated names as <code>1a1b1c5inner</code>, with the
+            previously mentioned characters around them.
+          </p>
+
+          <div class="quiz-section">
+            <p>What is the mangling of the following identifier?</p>
+            <pre class="code">
+namespace cats {
+  namespace like {
+    void meow() {}
+  }
+}
+            </pre>
+            <form
+              data-challenge="3"
+              data-answer="_ZN4cats4like4meowEv"
+              data-hint="Remember the prefix and function type, and don't forget to wrap it in the nested start and end"
+            >
+              <input class="quiz-input" />
+              <button
+                data-challenge-submit="3"
+                class="submit-challenge"
+                type="submit"
+              >
+                Answer
+              </button>
+              <div class="error"></div>
+            </form>
+          </div>
+        </section>
+        <section data-step="3" class="step">
+          <p>
+            Good job! You have successfully answered all the question and now
+            know the basic makeup of an Itanium-mangled C++ symbol.
+          </p>
+          <p>
+            In the next lesson, we will use this knowledge to look at basic
+            function types beyond <code>v</code>. Mangling function types is
+            important for function overloading, but I don't want to overload you
+            with information, so feel free to take a break and let the previous
+            knowledge sink in.
+          </p>
+          <p>
+            If you want to try out more code and look at its mangling, I
+            recommend using Compiler Explorer on
+            <a href="https://godbolt.org">godbolt.org</a>. Under "Output", you
+            can uncheck the box to demangle identifiers to see the mangled
+            identifiers for any C++ code you enter on the left.
+          </p>
+          <div class="center">
+            <a href="/lesson-2.html" class="action-button">
+              Lesson 2: something that has not been written yet.
+            </a>
           </div>
         </section>
       </div>
