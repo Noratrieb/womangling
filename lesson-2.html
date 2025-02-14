@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+    <title>Womangling</title>
+  </head>
+  <body>
+    <main class="main">
+      <div class="content" id="content-area">
+        <h1>
+          <a class="root-link" href=".">Learn C++ Itanium Symbol Mangling</a>
+        </h1>
+        <h2>Lesson 2: Lesson 2: Arguments</h2>
+        <noscript>
+          <p>
+            Warning: You have JavaScript disabled. While the content is still
+            viewable, interactive exercises will not work. Consider enabling
+            JavaScript for this website.
+          </p>
+        </noscript>
+
+        <!-- https://itanium-cxx-abi.github.io/cxx-abi/abi.html#mangle.function-type -->
+
+        <section data-step="0" class="step">
+          <p>
+            All symbols that we have looked at so far have ended with a
+            <code>v</code>. I have previously explained that the
+            <code>v</code> stands for a function type with no arguments.
+          </p>
+          <p>
+            C++ has function overloading, which means that a function with the
+            same name can be declared multiple times with different argument
+            types, and the one with matching argument types will be called. If
+            we just mangled the function name as shown previously, this wouldn't
+            work, because we'd get multiple symbols with the same name, which is
+            exactly what mangling is designed to avoid. Therefore, any C++
+            mangling scheme must encode the function argument types in the
+            symbol name.
+          </p>
+          <pre class="code">
+void a(int x);
+void a(char *y);
+int main() {
+  a(0); // This will call the first a
+}
+          </pre>
+          <p>
+            The function type is encoded after the name. It contains all the
+            arguments for the function. In some cases it will also contain the
+            return type first, but not for the functions we are looking at right
+            now.
+          </p>
+          <pre class="code">
+void a(int x, int y, long z) {}
+          </pre>
+          <p>
+            This function will be mangled as <code>_Z1aiil</code>. We already
+            know what <code>_Z1a</code> means, but the <code>iil</code> is new.
+            It represents the three arguments, an <code>int</code>, another
+            <code>int</code>, and then a <code>long</code>. The primitives are
+            just a single character, more complex types have more characters.
+          </p>
+          <p>
+            A function taking zero arguments is interpreted as a function taking
+            <code>(void)</code>, which is encoded as <code>v</code>.
+          </p>
+          <p>
+            <code>int</code> is <code>i</code>, <code>long</code> is
+            <code>l</code>. <code>float</code> is <code>f</code>,
+            <code>double</code> is <code>d</code>. These types are very easy to
+            remember, many others less so. Other easy to remember frequently
+            used types are pointers (<code>T*</code>) which are encoded as
+            <code>P</code> followed by the pointed to type and references
+            (<code>T&</code>) which encoded as <code>R</code> followed by the
+            referenced type.
+          </p>
+          <pre class="code">
+void a(int x, int *y, double &z) {}
+          </pre>
+          <p>
+            This function is mangled as <code>_Z1aiPiRd</code>. It's an
+            <code>int</code> (<code>i</code>), a
+            <code>int*</code> (<code>Pi</code>), and a
+            <code>double&</code> (<code>Pd</code>).
+          </p>
+          <div class="quiz-section">
+            <p>What is the mangled symbol of the following function?</p>
+            <pre class="code">
+void hello(int **programmer, long day, float &r) {}
+            </pre>
+            <form data-challenge="1" data-answer="_Z5helloPPilRf">
+              <input class="quiz-input" />
+              <button
+                data-challenge-submit="1"
+                data-hint="An int** is PPi, a pointer to a pointer to an integer"
+                class="submit-challenge"
+                type="submit"
+              >
+                Answer
+              </button>
+              <div class="error"></div>
+            </form>
+          </div>
+        </section>
+        <section data-step="1" class="step">
+          <p>
+            We can combine this with our previous knowledge of nested names to
+            mangle the following definition:
+          </p>
+          <pre class="code">
+namespace outer::inner {
+  void yes(int a, int b, long &c) {}
+}
+          </pre>
+          <p>This will be mangled as <code>_ZN5outer5inner3yesEiiRl</code></p>
+          <div class="quiz-section">
+            <p>What is the mangled symbol of the following function?</p>
+            <pre class="code">
+namespace very::much::nested {
+  void name(int **a, long &raw, float f, double d) {}
+}
+            </pre>
+            <form
+              data-challenge="2"
+              data-answer="_ZN4very4much6nested4nameEPPiRlfd"
+            >
+              <input class="quiz-input" />
+              <button
+                data-challenge-submit="2"
+                data-hint="Don't forget the N and E"
+                class="submit-challenge"
+                type="submit"
+              >
+                Answer
+              </button>
+              <div class="error"></div>
+            </form>
+          </div>
+        </section>
+        <section data-step="2" class="step">
+          <p>Let's look at a few more common types.</p>
+          <p>
+            <code>char</code> is <code>c</code>. <code>unsigned int</code> is
+            <code>j</code> (like <code>i</code> but one higher).
+            <code>unsigned long</code> is <code>m</code>, following the same
+            pattern. <code>long long</code> (64-bit) is <code>x</code> (you can
+            think of it being the native integer, integer x on modern machines)-
+            <code>unsigned long long</code> is <code>y</code>, again being one
+            higher. <code>short</code> is <code>s</code>, with its unsigned
+            variant being, you may have guessed it, <code>t</code>.
+          </p>
+          <p>
+            In the future there might be a part of the website where you can
+            memorize these encodings more easily.
+          </p>
+          <div class="quiz-section">
+            <p>What is the mangled symbol of the following function?</p>
+            <pre class="code">
+void name(unsigned long long a, unsigned short b, char c, int d) {}
+            </pre>
+            <form
+              data-challenge="3"
+              data-answer="_Z4nameytci"
+              data-hint="Remember that unsigned variants are one higher in the alphabet"
+            >
+              <input class="quiz-input" />
+              <button
+                data-challenge-submit="3"
+                class="submit-challenge"
+                type="submit"
+              >
+                Answer
+              </button>
+              <div class="error"></div>
+            </form>
+          </div>
+        </section>
+
+        <section data-step="3" class="step">
+          <p>
+            Good job! You have now learnt about the mangling of basic types.
+          </p>
+          <p class="lesson-last-paragraph">
+            This is the last lesson that has been written so far. More lessons
+            may appear in the future.
+          </p>
+        </section>
+      </div>
+    </main>
+    <script>
+      window.LESSON = 2;
+    </script>
+    <script type="module" src="lessons.js"></script>
+  </body>
+</html>

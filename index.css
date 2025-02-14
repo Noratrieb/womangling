@@ -45,13 +45,15 @@ footer {
 
 .action-button {
   width: 400px;
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: bold;
   padding: 20px;
   background-color: var(--color-primary);
   color: var(--color-white);
   border: none;
   text-decoration: none;
+
+  display: block;
 
   &:hover {
     background-color: color-mix(in oklab, var(--color-primary), white 15%);
@@ -64,6 +66,7 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 10px;
+
 }
 
 .step {
@@ -74,6 +77,8 @@ footer {
 
 .code {
   padding-left: 30px;
+  overflow: scroll;
+  max-width: calc(100vw - 40px);
 }
 
 .hidden {
@@ -114,4 +119,8 @@ form[data-challenge] > .error {
 .quiz-input {
   height: 2.5rem;
   font-size: 1rem;
+}
+
+.lesson-last-paragraph {
+  margin-bottom: 40px;
 }
