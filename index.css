@@ -6,6 +6,7 @@ html {
   --color-primary: rebeccapurple;
   --color-white: white;
   --color-error: red;
+  --color-success: green;
 
   height: 100%;
 }
@@ -25,6 +26,9 @@ body {
 
 footer {
   justify-self: flex-end;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 20px;
 }
 
 .content {
@@ -41,6 +45,18 @@ footer {
 .root-link {
   color: initial;
   text-decoration: none;
+}
+
+.main-two-columns {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+
+  margin-bottom: 40px;
+}
+
+.column-divider {
+  border: black 1px solid;
 }
 
 .action-button {
@@ -66,7 +82,6 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 10px;
-
 }
 
 .step {

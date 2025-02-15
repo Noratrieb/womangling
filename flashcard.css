@@ -1,0 +1,35 @@
+.flash-card {
+  margin-bottom: 10px;
+}
+
+.flashcard-questionee {
+  font-size: 1rem;
+}
+
+.flashcard-option-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 0;
+}
+
+.flashcard-option {
+  width: 250px;
+  font-weight: bold;
+  padding: 10px;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  text-decoration: none;
+
+  display: block;
+  cursor: pointer;
+
+  &:hover {
+    background-color: color-mix(in oklab, var(--color-primary), white 15%);
+  }
+}
+
+.flashcard-error {
+  color: var(--color-error);
+}

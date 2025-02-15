@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../index.css" />
+    <link rel="stylesheet" href="../flashcard.css" />
+    <title>Womangling</title>
+  </head>
+  <body>
+    <main class="main">
+      <div class="content" id="content-area">
+        <h1>
+          <a class="root-link" href="..">Learn C++ Itanium Symbol Mangling</a>
+        </h1>
+        <h2>Practice: Primitive Type Names</h2>
+        <noscript>
+          <p>
+            Warning: You have JavaScript disabled. While the content is still
+            viewable, interactive exercises will not work. Consider enabling
+            JavaScript for this website.
+          </p>
+        </noscript>
+        <div id="card" class="flash-card quiz-section">
+          <p>Which of these is this mangled?</p>
+          <code class="flashcard-questionee"></code>
+          <ul class="flashcard-option-list" aria-live="polite"></ul>
+          <div aria-live="polite" id="info-text"></div>
+        </div>
+      </div>
+    </main>
+    <script>
+      window.ITEMS = [
+        { mangle: "v", means: "void" },
+        { mangle: "w", means: "wchar_t" },
+        { mangle: "b", means: "bool" },
+        { mangle: "c", means: "char" },
+        { mangle: "a", means: "signed char" },
+        { mangle: "h", means: "unsigned char" },
+        { mangle: "s", means: "short" },
+        { mangle: "t", means: "unsigned short" },
+        { mangle: "i", means: "int" },
+        { mangle: "j", means: "unsigned int" },
+        { mangle: "l", means: "long" },
+        { mangle: "m", means: "unsigned long" },
+        { mangle: "x", means: "long long" },
+        { mangle: "y", means: "unsigned long long" },
+        { mangle: "n", means: "__int128", obscure: true },
+        { mangle: "o", means: "unsigned __int128", obscure: true },
+        { mangle: "f", means: "float" },
+        { mangle: "d", means: "double" },
+        { mangle: "e", means: "long double, __float80", obscure: true },
+        { mangle: "g", means: "__float128", obscure: true },
+        { mangle: "z", means: "__float128", obscure: true },
+        { mangle: "Dh", means: "__half (half-precision float)", obscure: true },
+        { mangle: "DF16b", means: "std::bfloat16_t", obscure: true },
+        { mangle: "Di", means: "char32_t", obscure: true },
+        { mangle: "Ds", means: "char16_t", obscure: true },
+        { mangle: "Du", means: "char8_t", obscure: true },
+        { mangle: "Da", means: "auto" },
+        { mangle: "Dc", means: "decltype(auto)" },
+        { mangle: "Dn", means: "std::nullptr_t", obscure: true },
+      ];
+    </script>
+    <script type="module" src="../flashcard.js"></script>
+  </body>
+</html>
