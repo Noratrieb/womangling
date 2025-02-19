@@ -50,13 +50,16 @@ footer {
 .main-two-columns {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 20px;
 
   margin-bottom: 40px;
 }
 
-.column-divider {
-  border: black 1px solid;
+@media screen and (min-width: 560px) {
+  .column-divider {
+    border: black 1px solid;
+  }
 }
 
 .action-button {
