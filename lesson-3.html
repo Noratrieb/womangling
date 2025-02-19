@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+    <title>Womangling</title>
+  </head>
+  <body>
+    <main class="main">
+      <div class="content" id="content-area">
+        <h1>
+          <a class="root-link" href=".">Learn C++ Itanium Symbol Mangling</a>
+        </h1>
+        <h2>Lesson 3: Basic Templates</h2>
+        <noscript>
+          <p>
+            Warning: You have JavaScript disabled. While the content is still
+            viewable, interactive exercises will not work. Consider enabling
+            JavaScript for this website.
+          </p>
+        </noscript>
+
+        <!-- https://itanium-cxx-abi.github.io/cxx-abi/abi.html#mangle.function-type -->
+
+        <section data-step="0" class="step">
+          <p>
+            In this lesson we will look at C++'s most important features and
+            another big motivation of why symbol mangling exists and is as
+            complicated as it is: templates.
+          </p>
+          <p>
+            If you're not familiar with templates already, templates provide a
+            way to write a function that is generic over a type (or value, which
+            we will get to later). It can then be instantiated with different
+            types and change its behavior depending on which type it was
+            instantiated with.
+          </p>
+          <pre class="code">
+template&lt;typename T&gt;
+void empty(T a) {}
+          </pre>
+          <p>
+            Here we create an empty function that takes an argument of type
+            <code>T</code>, where <code>T</code> is a template parameter. We can
+            call <code>empty</code> with all sorts of types.
+          </p>
+          <pre class="code">
+int main() {
+  empty(0);   // T=int
+  empty("0"); // T=const char*
+  empty(0l);  // T=long
+}
+          </pre>
+          <p>
+            For every call with a unique type, the compiler will essentially
+            copy-paste the function and fill in the concrete template. So for
+            every different type, there's a different <i>instantiation</i>. The
+            symbol mangling scheme must ensure that different instantiations get
+            different symbols, otherwise we coul get conflicts between different
+            instantiations. This is achieved by encoding the template parameters
+            into the symbol.
+          </p>
+          <p>
+            The way this is handled is by wrapping all the arguments between a
+            <code>I</code> (you can remember it as "instantiation") and
+            <code>E</code> (end) and appending this to the name, before the type
+            of the function.
+          </p>
+          <p>
+            We will also learn about a new type, the template parameter type,
+            used to encode the parameter of the example function above. Template
+            parameter types are not encoded as their instantiated types, but as
+            a "parameter type". The first template parameter type is denoted
+            with a
+            <code>T</code> followed by an underscore.
+          </p>
+          <p>
+            One last thing: templated functions include the
+            <b>return type</b> as the first type in the argument list.
+          </p>
+          <p>
+            With this, our example instantiation below will have the following
+            mangled symbol: <code>_Z5emptyIiEvT_</code>.
+          </p>
+          <pre class="code">
+template&lt;typename T&gt;
+void empty(T a) {}
+int main() {
+  empty(0);   // T=int
+}
+          </pre>
+          <ul>
+            <li><code>_Z5empty</code>: prefix and function name</li>
+            <li><code>I</code>: start of template arguments</li>
+            <li><code>i</code>: template argument of type <coed>int</coed></li>
+            <li><code>E</code>: end of template arguments</li>
+            <li>
+              <code>v</code>: return type of the function, <code>void</code>
+            </li>
+            <li>
+              <code>T_</code>: first argument of the function, the first
+              template parameter (which is instanitated as <code>int</code>, but
+              that isn't stored in the symbol for efficiency)
+            </li>
+          </ul>
+          <div class="quiz-section">
+            <p>
+              What is the mangled symbol of the following instantiation of
+              empty?
+            </p>
+            <pre class="code">
+template&lt;typename T&gt;
+T empty() {}
+int main() {
+  empty&lt;long&gt;(); // T=long
+}
+            </pre>
+            <form data-challenge="1" data-answer="_Z5emptyIlET_v">
+              <input class="quiz-input" />
+              <button
+                data-challenge-submit="1"
+                data-hint="Don't forget about the return type, which is T_"
+                class="submit-challenge"
+                type="submit"
+              >
+                Answer
+              </button>
+              <div class="error"></div>
+            </form>
+          </div>
+        </section>
+        <section data-step="1" class="step">
+          <p class="lesson-last-paragraph">
+            This lesson is still work in progress, further steps will follow in
+            the future.
+          </p>
+        </section>
+      </div>
+    </main>
+    <script>
+      window.LESSON = 3;
+    </script>
+    <script type="module" src="lessons.js"></script>
+  </body>
+</html>
